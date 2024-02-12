@@ -52,8 +52,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate{
     }
     
     private func show(quiz step: QuizStepViewModel) {
-        noButton.isEnabled = true
-        yesButton.isEnabled = true
+        changeButtonState(isEnabled: true)
         imageView.image = step.image
         textLabel.text = step.question
         counterLabel.text = step.questionNumber
@@ -97,7 +96,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate{
         let bestGame = statisticService.bestGame
         let gamesCountPlayed = "Количество сыгранных игр: \(statisticService.gamesCount)"
         let bestGameRecord = "Рекорд: \(bestGame.correct)\\\(bestGame.total) (\(bestGame.date.dateTimeString))"
-        let averageAccuracy = "Средняя точность: \(String(format: "%.2f", statisticService.totalAccuracy))%"
+        let averageAccuracy = "Средняя точность: \(String(format: "%.0f%", statisticService.totalAccuracy))%"
         let messageText = [result.text, gamesCountPlayed, bestGameRecord, averageAccuracy].joined(separator: "\n")
         let alertModel = AlertModel(
             title: result.title,
@@ -114,11 +113,15 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate{
         alertPresenter?.show(alertModel: alertModel)
     }
     
+    private func changeButtonState(isEnabled: Bool) {
+        noButton.isEnabled = isEnabled
+        yesButton.isEnabled = isEnabled
+    }
+    
     // MARK: - Actions
     
     @IBAction private func noButtonClicked(_ sender: Any) {
-        noButton.isEnabled = false
-        yesButton.isEnabled = false
+        changeButtonState(isEnabled: false)
         guard let currentQuestion = currentQuestion else {
             return
         }
@@ -126,8 +129,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate{
     }
     
     @IBAction private func yesButtonClicked(_ sender: Any) {
-        noButton.isEnabled = false
-        yesButton.isEnabled = false
+        changeButtonState(isEnabled: false)
         guard let currentQuestion = currentQuestion else {
             return
         }

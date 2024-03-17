@@ -8,6 +8,9 @@
 import Foundation
 
 final class QuestionFactory: QuestionFactoryProtocol {
+    private enum LoadError: Error {
+        case lodeError
+    }
     private let moviesLoader: MoviesLoading
     weak var delegate: QuestionFactoryDelegate?
     init(moviesLoader: MoviesLoading, delegate: QuestionFactoryDelegate?) {
@@ -43,7 +46,7 @@ final class QuestionFactory: QuestionFactoryProtocol {
             do{
                 imageData = try Data(contentsOf: movie.resizedImageUrl)
             } catch {
-                print("Failed to load image")
+                self.delegate?.didFailToLoadData(with: LoadError.lodeError)
             }
             
             let rating = Float(movie.rating) ?? 0

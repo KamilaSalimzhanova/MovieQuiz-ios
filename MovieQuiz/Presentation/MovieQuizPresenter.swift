@@ -1,7 +1,7 @@
 import UIKit
 
 final class MovieQuizPresenter: QuestionFactoryDelegate {
-    private let statisticService: StatisticService!
+    private let statisticService: StatisticService?
     private var questionFactory: QuestionFactoryProtocol?
     private weak var viewController: MovieQuizViewControllerProtocol?
     
@@ -115,14 +115,14 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
     }
 
     func makeResultsMessage() -> String {
-        statisticService.store(correct: correctAnswers, total: questionsAmount)
+        statisticService?.store(correct: correctAnswers, total: questionsAmount)
         
-        let bestGame = statisticService.bestGame
-        let totalPlaysCountLine = "Количество сыгранных квизов: \(statisticService.gamesCount)"
+        let bestGame = statisticService?.bestGame
+        let totalPlaysCountLine = "Количество сыгранных квизов: \(statisticService?.gamesCount ?? 0)"
         let currentGameResultLine = "Ваш результат: \(correctAnswers)\\\(questionsAmount)"
-        let bestGameInfoLine = "Рекорд: \(bestGame.correct)\\\(bestGame.total)"
-        + " (\(bestGame.date.dateTimeString))"
-        let averageAccuracyLine = "Средняя точность: \(String(format: "%.2f", statisticService.totalAccuracy))%"
+        let bestGameInfoLine = "Рекорд: \(bestGame?.correct ?? 0)\\\(bestGame?.total ?? 0)"
+        + " (\(bestGame?.date.dateTimeString ?? Date().dateTimeString))"
+        let averageAccuracyLine = "Средняя точность: \(String(format: "%.2f", statisticService?.totalAccuracy ?? 0))%"
         
         let resultMessage = [
             currentGameResultLine, totalPlaysCountLine, bestGameInfoLine, averageAccuracyLine

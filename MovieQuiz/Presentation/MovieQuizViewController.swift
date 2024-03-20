@@ -8,7 +8,7 @@ final class MovieQuizViewController: UIViewController, MovieQuizViewControllerPr
     @IBOutlet private var yesButton: UIButton!
     @IBOutlet private var noButton: UIButton!
 
-    private var presenter: MovieQuizPresenter!
+    private var presenter: MovieQuizPresenter?
 
     // MARK: - Lifecycle
 
@@ -24,12 +24,12 @@ final class MovieQuizViewController: UIViewController, MovieQuizViewControllerPr
 
     @IBAction private func yesButtonClicked(_ sender: UIButton) {
         changeButtonState(isEnabled: false)
-        presenter.yesButtonClicked()
+        presenter?.yesButtonClicked()
     }
 
     @IBAction private func noButtonClicked(_ sender: UIButton) {
         changeButtonState(isEnabled: false)
-        presenter.noButtonClicked()
+        presenter?.noButtonClicked()
     }
 
     // MARK: - Private functions
@@ -43,7 +43,7 @@ final class MovieQuizViewController: UIViewController, MovieQuizViewControllerPr
     }
 
     func show(quiz result: QuizResultsViewModel) {
-        let message = presenter.makeResultsMessage()
+        let message = presenter?.makeResultsMessage()
 
         let alert = UIAlertController(
             title: result.title,
@@ -53,11 +53,11 @@ final class MovieQuizViewController: UIViewController, MovieQuizViewControllerPr
             let action = UIAlertAction(title: result.buttonText, style: .default) { [weak self] _ in
                 guard let self = self else { return }
 
-                self.presenter.restartGame()
+                self.presenter?.restartGame()
             }
 
         alert.addAction(action)
-
+        alert.view.accessibilityIdentifier = "Game results"
         self.present(alert, animated: true, completion: nil)
     }
 
@@ -87,9 +87,9 @@ final class MovieQuizViewController: UIViewController, MovieQuizViewControllerPr
             style: .default) { [weak self] _ in
                 guard let self = self else { return }
 
-                self.presenter.restartGame()
+                self.presenter?.restartGame()
             }
-
+        alert.view.accessibilityIdentifier = "Game results"
         alert.addAction(action)
     }
     func changeButtonState(isEnabled: Bool) {

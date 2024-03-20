@@ -14,23 +14,13 @@ protocol StatisticService {
     func store(correct count: Int, total amount: Int)
 }
 
-struct GameRecord: Codable {
-    let correct: Int
-    let total: Int
-    let date: Date
-    
-    // метод сравнения по количеству верных ответов
-    func isBetterThan(_ another: GameRecord) -> Bool {
-        correct > another.correct
-    }
-}
-
 final class StatisticServiceImplementation: StatisticService {
     private enum Keys: String {
         case bestGame, correct, total, gamesCount
     }
     
     private let userDefaults = UserDefaults.standard
+    // MARK: - Public properties
     var totalAccuracy: Double {
         get {
             userDefaults.double(forKey: Keys.total.rawValue)
@@ -61,7 +51,7 @@ final class StatisticServiceImplementation: StatisticService {
             userDefaults.set(data, forKey: Keys.bestGame.rawValue)
         }
     }
-    
+    // MARK: - Public methods
     func store(correct count: Int, total amount: Int) {
         self.totalAccuracy = Double(count)/Double(amount) * 100
         self.gamesCount += 1

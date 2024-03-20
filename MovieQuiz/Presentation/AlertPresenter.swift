@@ -1,10 +1,3 @@
-//
-//  AlertPresenter.swift
-//  MovieQuiz
-//
-//  Created by kamila on 05.02.2024.
-//
-
 import UIKit
 
 protocol AlertPresenterProtocol {
@@ -12,8 +5,8 @@ protocol AlertPresenterProtocol {
     func show(alertModel: AlertModel)
 }
 
-final class AlertPresenter {
-    private weak var delegate: UIViewController?
+final class AlertPresenter: AlertPresenterProtocol {
+    weak var delegate: UIViewController?
     
     init(delegate: UIViewController? = nil) {
         self.delegate = delegate
